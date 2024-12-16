@@ -1,76 +1,36 @@
-package atm;
+package numbergame;
+import java.util.Random;   // Import for random number generation
+import java.util.Scanner;  // Import for user input
 
-import java.util.Scanner;
+public class Main {
 
-public class Main { // Ensure the class name matches the file name
-
-    static double balance = 1000.00; // initial balance
-    
-    public static void main(String[] args) { // Ensure this is the entry point
-        Scanner scanner = new Scanner(System.in);
-        int userChoice;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); // Scanner to read user input
+        Random random = new Random();            // Random number generator
+        int lowerBound = 1;                      // Minimum number in the range
+        int upperBound = 100;                    // Maximum number in the range
+        int randomNumber = random.nextInt(upperBound - lowerBound + 1) + lowerBound; 
+        int userGuess = 0;                       // Variable to store user's guess
+        int attempts = 0;                        // Counter for number of attempts
         
-        System.out.println("Welcome to the ATM Interface!");
-        
-        do {
-            // Displaying menu
-            System.out.println("\nATM Menu:");
-            System.out.println("1. Check Balance");
-            System.out.println("2. Deposit Money");
-            System.out.println("3. Withdraw Money");
-            System.out.println("4. Exit");
-            System.out.print("Please select an option : ");
-            
-            userChoice = scanner.nextInt();
-         // Check if the input is within the valid range
-            if (userChoice < 1 || userChoice > 4) {
-                System.out.println("Invalid option. Please try again.");
+        System.out.println("Welcome to the Number Guessing Game!");
+        System.out.println("Try to guess the number between " + lowerBound + " and " + upperBound);
+
+        while (userGuess != randomNumber) {
+            System.out.print("Enter your guess: ");
+            userGuess = scanner.nextInt(); 
+            attempts++;
+
+            if (userGuess < randomNumber) {
+                System.out.println("Too low! Try again.");
+            } else if (userGuess > randomNumber) {
+                System.out.println("Too high! Try again.");
             } else {
-            switch (userChoice) {
-                case 1:
-                    // Display current balance
-                    System.out.println("Your current balance is: $" + balance);
-                    break;
-                    
-                case 2:
-                    // Deposit money
-                    System.out.print("Enter deposit amount: $");
-                    double depositAmount = scanner.nextDouble();
-                    if (depositAmount > 0) {
-                        balance += depositAmount;
-                        System.out.println("You have successfully deposited: $" + depositAmount);
-                    } else {
-                        System.out.println("Deposit amount must be greater than 0.");
-                    }
-                    break;
-                    
-                case 3:
-                    // Withdraw money
-                    System.out.print("Enter withdrawal amount: $");
-                    double withdrawAmount = scanner.nextDouble();
-                    if (withdrawAmount > 0 && withdrawAmount <= balance) {
-                        balance -= withdrawAmount;
-                        System.out.println("You have successfully withdrawn: $" + withdrawAmount);
-                    } else if (withdrawAmount > balance) {
-                        System.out.println("Insufficient balance for this withdrawal.");
-                    } else {
-                        System.out.println("Withdrawal amount must be greater than 0.");
-                    }
-                    break;
-                    
-                case 4:
-                    // Exit the ATM
-                    System.out.println("Thank you for using the ATM. Goodbye!");
-                    break;
-                    
-                default:
-                    System.out.println("Invalid option. Please try again.");
-           
+                System.out.println("Congratulations! You've guessed the correct number.");
+                System.out.println("It took you " + attempts + " attempts.");
             }
-            }
-        } while (userChoice != 4);
+        }
         
         scanner.close();
     }
 }
-
